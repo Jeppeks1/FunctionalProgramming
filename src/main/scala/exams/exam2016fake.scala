@@ -65,8 +65,8 @@ object exam2016fake {
       * characters back to a String.
       */
 
-    //def onList(f: String => String): List[Char] => List[Char] =
-    //  cs => f(cs.mkString).toList
+    def onList(f: String => String): List[Char] => List[Char] =
+      cs => f(cs.mkString).toList
 
   }
 
@@ -198,30 +198,10 @@ object exam2016fake {
     })
 
 
-    /**
-      * Task 7.
-      *
-      * Explain in English (or in Danish) which parts of your solution
-      * need to be updated (and how) in order to create a lense that provides the
-      * anologous functionality for the right end of the deque
-      */
-
-
   }
 
 
   object Question7 {
-
-    /* Task 8.
-   *
-   * Consider the standard library function (from the List companion object).
-   *
-   * def fill[A](n: Int)(elem: =>A): List[A]
-   *
-   * What is the meaning of (=>) in the above signature, and why the designers
-   * of Scala library have used this type operator there? Explain in English (or
-   * Danish).
-   */
 
     import handIns.generator.Gen
 
