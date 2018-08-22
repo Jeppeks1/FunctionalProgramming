@@ -189,13 +189,14 @@ object exam2016fake {
    * Include the type of the lens (partial/total), and the put and get function.
    */
 
-    def leftFT[A]: Optional[FingerTree[A], A] = Optional[FingerTree[A], A](t => viewL(t) match {
-      case NilTree() => None
-      case ConsL(hd, _) => Some(hd)
-    })(a => {
-      case NilTree() => Empty().addL(a)
-      case ConsL(_, tl) => tl.addL[A](a)
-    })
+    // Outcommented due to compilation errors, as the above definitions are not implemented.
+    // def leftFT[A]: Optional[FingerTree[A], A] = Optional[FingerTree[A], A](t => viewL(t) match {
+    //   case NilTree() => None
+    //   case ConsL(hd, _) => Some(hd)
+    // })(a => {
+    //   case NilTree() => Empty().addL[A](a)
+    //   case ConsL(_, tl) => tl.addL[A](a)
+    // })
 
 
   }
