@@ -17,14 +17,15 @@ case class Gen[A](sample: State[RNG, A]) {
   def listOfN(n: Int): Gen[List[A]] =
     Gen(State.sequence(List.fill(n)(this.sample)))
 
+  def listOfN(size: Gen[Int]): Gen[List[A]] =
+    size.flatMap(a => listOfN(a))
+
   def flatMap[B](f: A => Gen[B]): Gen[B] =
     Gen(sample.flatMap(a => f(a).sample))
 
   def map[B](f: A => B): Gen[B] =
     this.flatMap(a => Gen.unit(f(a)))
 
-  def listOfN(size: Gen[Int]): Gen[List[A]] =
-    size.flatMap(a => listOfN(a))
 
   // Exercise 6 (Ex. 8.7; I implemented it as a method, the book asks for a
   // function, the difference is minor; you may want to have both for
@@ -109,25 +110,28 @@ case class Prop(run: (TestCases, RNG) => Result) {
 
   // (Exercise 7)
 
-  def &&(that: Prop): Prop = Prop{
-    (n, rng) => run(n, rng) match {
-      case Passed => that.run(n, rng)
-      case x => x
-    }
+  def &&(that: Prop): Prop = Prop {
+    (n, rng) =>
+      run(n, rng) match {
+        case Passed => that.run(n, rng)
+        case x => x
+      }
   }
 
-  def ||(that :Prop): Prop = Prop{
-    (n, rng) => run(n, rng) match {
-      case Falsified(msg, _) => that.tag(msg).run(n, rng)
-      case x => x
-    }
+  def ||(that: Prop): Prop = Prop {
+    (n, rng) =>
+      run(n, rng) match {
+        case Falsified(msg, _) => that.tag(msg).run(n, rng)
+        case x => x
+      }
   }
 
-  def tag(msg: String): Prop = Prop{
-    (n, rng) => run(n, rng) match {
-      case Falsified(e, c) => Falsified(msg + "\n" + e, c)
-      case x => x
-    }
+  def tag(msg: String): Prop = Prop {
+    (n, rng) =>
+      run(n, rng) match {
+        case Falsified(e, c) => Falsified(msg + "\n" + e, c)
+        case x => x
+      }
   }
 
 }
